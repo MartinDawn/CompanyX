@@ -1,0 +1,153 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <ul class="sidenav">
+        <li><a href="/">Product</a></li>
+        <li><a href="/category">Category</a></li>
+        <li><a class="active" href="/subcategory">Subcategory</a></li>
+    </ul>
+    <div id="toast" class="toast hidden"></div>
+    <div class="content" style="margin-left: 7%;">
+        <button onclick="openForm('new-subcategory')" style="margin-left: 5%;"><i class="fa fa-plus"></i> New
+            subcategory</button>
+
+        <div class="overlay"></div>
+
+        <div class="form-popup" id="new-subcategory">
+            <form action="/subcategory" class="form-container" method="post">
+                <h2 class="title">Add new subcategory</h2>
+                <div class="input-group">
+                    <label><b>Category</b></label>
+                    <select name="ProductCategoryID">
+                        <% categories.forEach(category=> { %>
+                            <option value=<%=category.ProductCategoryID %>>
+                                <%=category.Name || "N/A" %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label><b>Name</b></label><br>
+                    <input type="text" name="Name" maxlength="50" required>
+                </div>
+                <div class="button-container">
+                    <button type="button" class="close" onclick="closeForm()">Close</button>
+                    <button type="submit" class="save">Save</button>
+                </div>
+
+            </form>
+        </div>
+        <script>
+            function openForm(formId) {
+                document.getElementById(formId).style.display = "block";
+                document.querySelector(".overlay").style.display = "block"; // Hiển thị lớp phủ
+            }
+
+            function closeForm() {
+                document.querySelectorAll(".form-popup").forEach(form => form.style.display = "none");
+                document.querySelector(".overlay").style.display = "none"; // Ẩn lớp phủ
+            }
+        </script>
+        <div class="table-container">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <!-- <th>rowguid</th> -->
+                        <th>ModifiedDate</th>
+                        <th>Category</th>
+                        <th>Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% subcategories.forEach(subcategory=> { %>
+                        <tr>
+                            <td>
+                                <%= subcategory.Name || "N/A" %>
+                            </td>
+                            <!-- <td>
+                                <%= subcategory.rowguid %>
+                            </td> -->
+                            <td>
+                                <%= subcategory.ModifiedDate %>
+                            </td>
+                            <td>
+                                <%= subcategory.ProductCategoryName || "N/A" %>
+                            </td>
+                            <td>
+                                <div style="display: flex; justify-content: center;">
+                                    <div>
+                                        <button
+                                            onclick="openForm('update-subcategory-<%= subcategory.ProductSubcategoryID %>')">Update</button>
+                                    </div>
+                                    <div class="form-popup update-subcategory"
+                                        id="update-subcategory-<%= subcategory.ProductSubcategoryID %>">
+                                        <form action="/subcategory/update/<%= subcategory.ProductSubcategoryID %>"
+                                            class="form-container" method="post">
+                                            <h2 class="title">Update subcategory</h2>
+                                            <div class="input-group">
+                                                <label><b>Product Subcategory ID</b></label><br>
+                                                <input type="number" name="ProductSubcategoryID"
+                                                    value="<%= subcategory.ProductSubcategoryID %>" disabled>
+                                            </div>
+                                            <div class="input-group">
+                                                <label><b>Name</b></label><br>
+                                                <input type="text" name="Name" maxlength="50"
+                                                    value="<%= subcategory.Name %>" required>
+                                            </div>
+                                            <div class="input-group">
+                                                <label><b>Category</b></label>
+                                                <select name="ProductCategoryID">
+                                                    <option value=""></option>
+                                                    <% categories.forEach(category=> { %>
+                                                        <option value=<%=category.ProductCategoryID %>>
+                                                            <%=category.Name%>
+                                                        </option>
+                                                        <% }) %>
+                                                </select>
+                                            </div>
+                                            <button type="button" class="close" onclick="closeForm()">Close</button>
+                                            <button type="submit" class="save">Save</button>
+                                        </form>
+                                    </div>
+                                    <form action="/subcategory/delete/<%= subcategory.ProductSubcategoryID %>"
+                                        method="post" onsubmit="return confirmDelete('<%= subcategory.Name %>')">
+                                        <button class="delete">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function confirmDelete(SubCategoryName) {
+            return confirm(`Are you sure you want to delete subcategory name ${SubCategoryName}?`);
+        }
+    </script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+      
+        if (message) {
+          const toast = document.getElementById('toast');
+          toast.textContent = message;
+          toast.classList.remove('hidden'); 
+          setTimeout(() => {
+            toast.classList.add('hidden');
+          }, 3000);
+        }
+      </script>
+</body>
+
+</html>

@@ -1,0 +1,674 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css">
+
+</head>
+
+<body>
+  <ul class="sidenav">
+    <li><a href="/">Product</a></li>
+    <li><a href="/category">Category</a></li>
+    <li><a href="/subcategory">Subcategory</a></li>
+  </ul>
+  <form class="toggles">
+    <label>
+      <input type="checkbox" name="toggle[]" value="name" checked>
+      <span>Name</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="productnumber" checked>
+      <span>Product Number</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="makeflag" checked>
+      <span>Make Flag</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="finishedgoodsflag" checked>
+      <span>Finished Goods Flag</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="color" unchecked>
+      <span>Color</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="safetystocklevel" checked>
+      <span>Safety Stock Level</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="reorderpoint" checked>
+      <span>Reorder Point</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="standardcost" checked>
+      <span>Standard Cost</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="listprice" checked>
+      <span>List Price</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="size" unchecked>
+      <span>Size</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="sizeunitmeasurecode" unchecked>
+      <span>Size Unit Measure Code</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="weightunitmeasurecode" unchecked>
+      <span>Weight Unit Measure Code</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="weight" unchecked>
+      <span>Weight</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="daystomanufacture" checked>
+      <span>Days To Manufacture</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="productline" unchecked>
+      <span>Product Line</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="class" unchecked>
+      <span>Class</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="style" unchecked>
+      <span>Style</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="productsubcategoryid" unchecked>
+      <span>Product Subcategory ID</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="productmodelid" unchecked>
+      <span>Product Model ID</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="sellstartdate" checked>
+      <span>Sell Start Date</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="sellenddate" unchecked>
+      <span>Sell End Date</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="discontinueddate" unchecked>
+      <span>Discontinued Date</span>
+    </label>
+    <label>
+      <input type="checkbox" name="toggle[]" value="modifieddate" unchecked>
+      <span>Modified Date</span>
+    </label>
+  </form>
+  <div id="toast" class="toast hidden"></div>
+  <div class="content">
+    <button onclick="openForm('new-product')" style="margin-left: 25px;"></i><i class="fa fa-plus"></i> New
+      product</button>
+
+    <div class="overlay"></div>
+
+    <div class="form-popup" id="new-product">
+      <form action="/product" class="form-container" method="post">
+        <h2 class="title">Add new product</h2>
+        <div class="grid">
+          <div class="input-group">
+            <label><b>Name</b></label><br>
+            <input type="text" name="Name" maxlength="50" required>
+          </div>
+          <div class="input-group">
+            <label><b>Product Number</b></label><br>
+            <input type="text" name="ProductNumber" maxlength="25" required>
+          </div>
+          <div class="input-group">
+            <label><b>Make Flag</b></label>
+            <select name="MakeFlag" required>
+              <option value=1>Manufactured</option>
+              <option value=0>Purchased</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Finished Goods Flag</b></label>
+            <select name="FinishedGoodsFlag" required>
+              <option value=1>Salable</option>
+              <option value=0>Unsalable</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Color</b></label>
+            <input type="text" name="Color" maxlength="15">
+          </div>
+          <div class="input-group">
+            <label><b>Safety Stock Level</b></label>
+            <input type="number" name="SafetyStockLevel" min="-32768" max="32767" value=2 required>
+          </div>
+          <div class="input-group">
+            <label><b>Reorder Point</b></label>
+            <input type="number" name="ReorderPoint" min="-32768" max="32767" value=1 required>
+          </div>
+          <div class="input-group">
+            <label><b>Standard Cost</b></label>
+            <input type="number" step="0.01" name="StandardCost" value=0 required>
+          </div>
+          <div class="input-group">
+            <label><b>List Price</b></label>
+            <input type="number" step="0.01" name="ListPrice" value=0 required>
+          </div>
+          <div class="grid6-4">
+            <div class="input-group">
+              <label><b>Size</b></label><br>
+              <input type="text" name="Size" maxlength="5">
+            </div>
+            <div class="input-group">
+              <label><b>Unit Measure</b></label><br>
+              <select name="SizeUnitMeasureCode">
+                <option value=""></option>
+                <% unitMeasures.forEach(unitMeasure=> { %>
+                  <option value=<%=unitMeasure.UnitMeasureCode %>>
+                    <%=unitMeasure.Name%>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="grid6-4">
+            <div class="input-group">
+              <label><b>Weight</b></label>
+              <input type="number" step="0.01" name="Weight">
+            </div>
+            <div class="input-group">
+              <label><b>Unit Measure</b></label>
+              <select name="WeightUnitMeasureCode">
+                <option value=""></option>
+                <% unitMeasures.forEach(unitMeasure=> { %>
+                  <option value=<%=unitMeasure.UnitMeasureCode %>>
+                    <%=unitMeasure.Name%>
+                  </option>
+                  <% }) %>
+              </select>
+            </div>
+          </div>
+          <div class="input-group">
+            <label><b>Days to Manufacture</b></label>
+            <input type="number" name="DaysToManufacture" value=0 required>
+          </div>
+          <div class="input-group">
+            <label><b>Product Line</b></label>
+            <select name="ProductLine">
+              <option value=""></option>
+              <option value="R">Road</option>
+              <option value="M">Mountain</option>
+              <option value="T">Touring</option>
+              <option value="S">Standard</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Class</b></label>
+            <select name="Class">
+              <option value=""></option>
+              <option value="H">High</option>
+              <option value="M">Medium</option>
+              <option value="L">Low</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Style</b></label>
+            <select name="Style">
+              <option value=""></option>
+              <option value="W">Womens</option>
+              <option value="M">Mens</option>
+              <option value="U">Universal</option>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Product Subcategory ID</b></label>
+            <select name="ProductSubcategoryID">
+              <option value=""></option>
+              <% subCategories.forEach(subCategory=> { %>
+                <option value=<%=subCategory.ProductSubcategoryID %>>
+                  <%=subCategory.Name%>
+                </option>
+                <% }) %>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Product Model ID</b></label>
+            <select name="ProductModelID">
+              <option value=""></option>
+              <% models.forEach(model=> { %>
+                <option value=<%=model.ProductModelID %>>
+                  <%=model.Name%>
+                </option>
+                <% }) %>
+            </select>
+          </div>
+          <div class="input-group">
+            <label><b>Sell Start Date</b></label>
+            <input type="date" name="SellStartDate" required>
+          </div>
+          <div class="input-group">
+            <label><b>Sell End Date</b></label>
+            <input type="date" name="SellEndDate">
+          </div>
+          <div class="input-group">
+            <label><b>Discontinued Date</b></label>
+            <input type="date" name="DiscontinuedDate">
+          </div>
+        </div>
+        <div class="button-container">
+          <button type="button" class="close" onclick="closeForm()">Close</button>
+          <button type="submit" class="save">Save</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      function openForm(formId) {
+        document.getElementById(formId).style.display = "block";
+        document.querySelector(".overlay").style.display = "block"; // Hiển thị lớp phủ
+      }
+
+      function closeForm() {
+        document.querySelectorAll('.form-popup').forEach(form => form.style.display = "none");
+        document.querySelector(".overlay").style.display = "none"; // Ẩn lớp phủ
+      }
+    </script>
+
+    <div class="table-container" style="margin-left: 20px">
+      <table id="product-table" class="display">
+        <thead>
+          <tr>
+            <th class="productnumber">ProductNumber</th>
+            <th class="name">Name</th>
+            <th class="makeflag">MakeFlag</th>
+            <th class="finishedgoodsflag">FinishedGoodsFlag</th>
+            <th class="color hide">Color</th>
+            <th class="safetystocklevel">SafetyStockLevel</th>
+            <th class="reorderpoint">ReorderPoint</th>
+            <th class="standardcost">StandardCost</th>
+            <th class="listprice">ListPrice</th>
+            <th class="size hide">Size</th>
+            <th class="sizeunitmeasurecode hide">SizeUnitMeasureCode</th>
+            <th class="weightunitmeasurecode hide">WeightUnitMeasureCode</th>
+            <th class="weight hide">Weight</th>
+            <th class="daystomanufacture">DaysToManufacture</th>
+            <th class="productline hide">ProductLine</th>
+            <th class="class hide">Class</th>
+            <th class="style hide">Style</th>
+            <th class="productsubcategoryid hide">ProductSubcategoryID</th>
+            <th class="productmodelid hide">ProductModelID</th>
+            <th class="sellstartdate">SellStartDate</th>
+            <th class="sellenddate hide">SellEndDate</th>
+            <th class="discontinueddate hide">DiscontinuedDate</th>
+            <th class="modifieddate hide">ModifiedDate</th>
+            <th>Option</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+  <script>
+    $(document).ready(function () {
+      let $form = $('.toggles');
+
+      function toggleColumn(event) {
+        let $checkbox = $(event.target);
+        let value = $checkbox.val();
+        let $target = $(`th.${value}, td.${value}`);
+
+        if ($checkbox.is(':checked')) {
+          $target.removeClass('hide').addClass('show');
+        } else {
+          $target.removeClass('show').addClass('hide');
+        }
+      }
+      // Listen for checkbox change event
+      $form.on('change', toggleColumn);
+    });
+  </script>
+  <script>
+    $(document).ready(function () {
+      var dataTable = $('#product-table').DataTable({
+        'processing': true,
+        'serverSide': true,
+        'serverMethod': 'get',
+        'layout': {
+          'bottomEnd': {
+            'paging': {
+              'firstLast': true
+            }
+          }
+        },
+        'ajax': {
+          'url': '/product'
+        },
+        'columns': [
+          { data: 'ProductNumber', class: 'productnumber' },
+          { data: 'Name', class: 'name' },
+          {
+            data: 'MakeFlag',
+            class: 'makeflag',
+            render: function (data) {
+              const flagClass = data ? 'manufacturing' : 'purchasing';
+              const flagText = data ? 'Manufactured' : 'Purchased';
+              return `<span class="${flagClass}">${flagText}</span>`;
+            }
+          },
+          {
+            data: 'FinishedGoodsFlag',
+            class: 'finishedgoodsflag',
+            render: function (data) {
+              const flagClass = data ? 'salable' : 'unsalable';
+              const flagText = data ? 'Salable' : 'Unsalable';
+              return `<span class="${flagClass}">${flagText}</span>`;
+            }
+          },
+          {
+            data: 'Color', class: 'color hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          { data: 'SafetyStockLevel', class: 'safetystocklevel' },
+          { data: 'ReorderPoint', class: 'reorderpoint' },
+          { data: 'StandardCost', class: 'standardcost' },
+          { data: 'ListPrice', class: 'listprice' },
+          {
+            data: 'Size', class: 'size hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'SizeUnitMeasureCode', class: 'sizeunitmeasurecode hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'WeightUnitMeasureCode', class: 'weightunitmeasurecode hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'Weight', class: 'weight hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          { data: 'DaysToManufacture', class: 'daystomanufacture' },
+          {
+            data: 'ProductLine', class: 'productline hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'Class', class: 'class hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'Style', class: 'style hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'ProductSubcategoryID', class: 'productsubcategoryid hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'ProductModelID', class: 'productmodelid hide',
+            render: function (data) {
+              return data ? data : 'N/A';
+            }
+          },
+          {
+            data: 'SellStartDate',
+            class: 'sellstartdate',
+            render: function (data) {
+              return data ? new Date(data).toLocaleDateString() : 'N/A';
+            }
+          },
+          {
+            data: 'SellEndDate',
+            class: 'sellenddate hide',
+            render: function (data) {
+              return data ? new Date(data).toLocaleDateString() : 'N/A';
+            }
+          },
+          {
+            data: 'DiscontinuedDate',
+            class: 'discontinueddate hide',
+            render: function (data) {
+              return data ? new Date(data).toLocaleDateString() : 'N/A';
+            }
+          },
+          {
+            data: 'ModifiedDate',
+            class: 'modifiedDate hide',
+            render: function (data) {
+              return data ? new Date(data).toLocaleDateString() : 'N/A';
+            }
+          },
+          {
+            data: null,
+            render: function (data) {
+              const updateButton = `
+              <div"><button onclick="openForm('update-product-${data.ProductID}')">Update</button></div>
+              <div class="form-popup" id="update-product-${data.ProductID}">
+                    <form action="/product/update/${data.ProductID}" class="form-container"
+                      method="post">
+                      <h2 class="title">Update product</h2>
+                      <div class="grid">
+                        <div class="input-group">
+                          <label><b>Product ID</b></label><br>
+                          <input type="number" name="ProductID" value="${data.ProductID}" disabled>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Name</b></label><br>
+                          <input type="text" name="Name" maxlength="50" value="${data.Name}" required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Product Number</b></label><br>
+                          <input type="text" name="ProductNumber" maxlength="25" value="${data.ProductNumber}"
+                            required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Make Flag</b></label>
+                          <select name="MakeFlag" required>
+                            <option value="1" ${data.MakeFlag == 1 ? 'selected' : ''}>Manufactured</option>
+                            <option value="0" ${data.MakeFlag == 0 ? 'selected' : ''}>Purchased</option>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Finished Goods Flag</b></label>
+                          <select name="FinishedGoodsFlag" required>
+                            <option value="1" ${data.FinishedGoodsFlag == 1 ? 'selected' : ''}>Salable</option>
+                            <option value="0" ${data.FinishedGoodsFlag == 0 ? 'selected' : ''}>Unsalable</option>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Color</b></label>
+                          <input type="text" name="Color" maxlength="15" value="${data.Color || ''}">
+                        </div>
+                        <div class="input-group">
+                          <label><b>Safety Stock Level</b></label>
+                          <input type="number" name="SafetyStockLevel" min="-32768" max="32767"
+                            value="${data.SafetyStockLevel}" required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Reorder Point</b></label>
+                          <input type="number" name="ReorderPoint" min="-32768" max="32767"
+                            value="${data.ReorderPoint}" required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Standard Cost</b></label>
+                          <input type="number" step="0.01" name="StandardCost" value="${data.StandardCost}"
+                            required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>List Price</b></label>
+                          <input type="number" step="0.01" name="ListPrice" value="${data.ListPrice}" required>
+                        </div>
+                        <div class="grid">
+                          <div class="input-group">
+                            <label><b>Size</b></label><br>
+                            <input type="text" name="Size" maxlength="5" value="${data.Size || ''}">
+                          </div>
+                          <div class="input-group">
+                            <label><b>Unit Measure</b></label><br>
+                            <select name="SizeUnitMeasureCode">
+                              <option value=""></option>
+                              <% unitMeasures.forEach(unitMeasure=> { %>
+                                <option value=<%=unitMeasure.UnitMeasureCode %>>
+                                  <%=unitMeasure.Name%>
+                                </option>
+                                <% }) %>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="grid">
+                          <div class="input-group">
+                            <label><b>Weight</b></label>
+                            <input type="number" step="0.01" name="Weight" value="${data.Weight}">
+                          </div>
+                          <div class="input-group">
+                            <label><b>Unit Measure</b></label>
+                            <select name="WeightUnitMeasureCode">
+                              <option value=""></option>
+                              <% unitMeasures.forEach(unitMeasure=> { %>
+                                <option value=<%=unitMeasure.UnitMeasureCode %>>
+                                  <%=unitMeasure.Name%>
+                                </option>
+                                <% }) %>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Days to Manufacture</b></label>
+                          <input type="number" name="DaysToManufacture" value="${data.DaysToManufacture}"
+                            required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Product Line</b></label>
+                          <select name="ProductLine">
+                            <option value=""></option>
+                            <option value="R">Road</option>
+                            <option value="M">Mountain</option>
+                            <option value="T">Touring</option>
+                            <option value="S">Standard</option>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Class</b></label>
+                          <select name="Class">
+                            <option value=""></option>
+                            <option value="H">High</option>
+                            <option value="M">Medium</option>
+                            <option value="L">Low</option>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Style</b></label>
+                          <select name="Style">
+                            <option value=""></option>
+                            <option value="W">Womens</option>
+                            <option value="M">Mens</option>
+                            <option value="U">Universal</option>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Product Subcategory ID</b></label>
+                          <select name="ProductSubcategoryID">
+                            <option value=""></option>
+                            <% subCategories.forEach(subCategory=> { %>
+                              <option value=<%=subCategory.ProductSubcategoryID %>>
+                                <%=subCategory.Name%>
+                              </option>
+                              <% }) %>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Product Model ID</b></label>
+                          <select name="ProductModelID">
+                            <option value=""></option>
+                            <% models.forEach(model=> { %>
+                              <option value=<%=model.ProductModelID %>>
+                                <%=model.Name%>
+                              </option>
+                              <% }) %>
+                          </select>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Sell Start Date</b></label>
+                          <input type="date" name="SellStartDate" value="${data.SellStartDate}" required>
+                        </div>
+                        <div class="input-group">
+                          <label><b>Sell End Date</b></label>
+                          <input type="date" name="SellEndDate" value="${data.SellEndDate}">
+                        </div>
+                        <div class="input-group">
+                          <label><b>Discontinued Date</b></label>
+                          <input type="date" name="DiscontinuedDate" value="${data.DiscontinuedDate}">
+                        </div>
+                      </div>
+                      <div class="button-container">
+                        <button type="button" class="close" onclick="closeForm()">Close</button>
+                        <button type="submit" class="save">Save</button>
+                      </div>
+                    </form>
+                  </div>
+            `;
+              const deleteButton = `
+              <form action="/product/delete/${data.ProductID}" method="post" onsubmit="return confirmDelete('${data.ProductNumber}')">
+    <button class="delete">Delete</button>
+</form>
+            `;
+              return `<div style="display: flex;">${updateButton} ${deleteButton}</div>`;
+            }
+          }
+        ]
+      });
+    });
+  </script>
+  <script>
+    function confirmDelete(productNumber) {
+      return confirm(`Are you sure you want to delete product ${productNumber}?`);
+    }
+  </script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+  
+    if (message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.remove('hidden'); 
+      setTimeout(() => {
+        toast.classList.add('hidden'); 
+      }, 3000);
+    }
+  </script>
+</body>
+
+</html>

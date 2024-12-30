@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <ul class="sidenav">
+        <li><a href="/">Product</a></li>
+        <li><a class="active" href="/category">Category</a></li>
+        <li><a href="/subcategory">Subcategory</a></li>
+    </ul>
+    <div id="toast" class="toast hidden"></div>
+    <div class="content" style="margin-left: 7%;">
+        <button onclick="openForm('new-category')" style="margin-left: 5%;"><i class="fa fa-plus"></i> New
+            category</button>
+
+        <div class="overlay"></div>
+
+        <div class="form-popup" id="new-category">
+            <form action="/category" class="form-container" method="post">
+                <h2 class="title">Add new category</h2>
+                <div class="input-group">
+                    <label><b>Name</b></label><br>
+                    <input type="text" name="Name" maxlength="50" required>
+                </div>
+                <div class="button-container">
+                    <button type="button" class="close" onclick="closeForm()">Close</button>
+                    <button type="submit" class="save">Save</button>
+                </div>
+            </form>
+        </div>
+        <script>
+            function openForm(formId) {
+                document.getElementById(formId).style.display = "block";
+                document.querySelector(".overlay").style.display = "block";
+            }
+
+            function closeForm() {
+                document.querySelectorAll('.form-popup').forEach(form => form.style.display = "none");
+                document.querySelector(".overlay").style.display = "none";
+            }
+        </script>
+        <div class="table-container">
+            <table id="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <!-- <th>rowguid</th> -->
+                        <th>ModifiedDate</th>
+                        <th>Option</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categories.forEach(category=> { %>
+                        <tr>
+                            <td>
+                                <%= category.Name || "N/A" %>
+                            </td>
+                            <!-- <td>
+                                <%= category.rowguid %>
+                            </td> -->
+                            <td>
+                                <%= category.ModifiedDate %>
+                            </td>
+                            <td>
+                                <div style="display: flex; justify-content: center">
+                                    <button
+                                        onclick="openForm('update-category-<%= category.ProductCategoryID %>')">Update</button>
+                                    <div class="form-popup update-category"
+                                        id="update-category-<%= category.ProductCategoryID %>">
+                                        <form action="/category/update/<%= category.ProductCategoryID %>"
+                                            class="form-container" method="post">
+                                            <h2 class="title">Update category</h2>
+                                            <div class="input-group">
+                                                <label><b>Product Category ID</b></label><br>
+                                                <input type="number" name="ProductCategoryID"
+                                                    value="<%= category.ProductCategoryID %>" disabled>
+                                            </div>
+                                            <div class="input-group">
+                                                <label><b>Name</b></label><br>
+                                                <input type="text" name="Name" maxlength="50" required>
+                                            </div>
+                                            <button type="button" class="close" onclick="closeForm()">Close</button>
+                                            <button type="submit" class="save">Save</button>
+                                        </form>
+                                    </div>
+                                    <form action="/category/delete/<%= category.ProductCategoryID %>" method="post"
+                                        onsubmit="return confirmDelete('<%= category.Name %>')">
+                                        <button class="delete">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <% }) %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        function confirmDelete(CategoryName) {
+            return confirm(`Are you sure you want to delete category name ${CategoryName}?`);
+        }
+    </script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+      
+        if (message) {
+          const toast = document.getElementById('toast');
+          toast.textContent = message;
+          toast.classList.remove('hidden');
+          setTimeout(() => {
+            toast.classList.add('hidden'); 
+          }, 3000);
+        }
+      </script>
+</body>
+
+</html>
